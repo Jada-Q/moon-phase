@@ -197,11 +197,13 @@ function drawMoon(
   const waxing = moon.phase < 0.5;
   const f = moon.fraction;
 
-  // Dark base (the unlit lunar disc — slightly warmer than sky)
-  const dark = lighten(p.zenith, 0.04);
+  // Dark base — boosted contrast so disc is always visible against sky
+  // (even at new moon when there's no sunlit portion to anchor the eye)
+  const dark = lighten(p.zenith, 0.11);
 
-  // Earthshine: faint glow on the dark side near new moon
-  const earthshineStrength = Math.max(0, (1 - f) * (1 - f)) * 0.35;
+  // Earthshine: ramp aggressively near new moon so the disc reads as a soft
+  // bluish ghost (mimics real-world earthshine "the old moon in the new moon's arms")
+  const earthshineStrength = Math.max(0, (1 - f) * (1 - f)) * 0.55;
 
   ctx.save();
   ctx.beginPath();
