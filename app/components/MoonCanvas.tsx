@@ -205,6 +205,21 @@ function drawMoon(
   // bluish ghost (mimics real-world earthshine "the old moon in the new moon's arms")
   const earthshineStrength = Math.max(0, (1 - f) * (1 - f)) * 0.55;
 
+  // Outer halo — soft luminous glow extending beyond the disc.
+  // Intensity scales with phase fraction; even at new moon a faint halo persists
+  // (art license — keeps the moon "present" against the sky).
+  const haloOuter = r * 2.4;
+  const haloInner = r * 0.85;
+  const haloAlpha = 0.08 + f * 0.28; // 0.08 at new, 0.36 at full
+  const haloGrad = ctx.createRadialGradient(x, y, haloInner, x, y, haloOuter);
+  haloGrad.addColorStop(0, `rgba(245,239,220,${haloAlpha})`);
+  haloGrad.addColorStop(0.5, `rgba(245,239,220,${haloAlpha * 0.25})`);
+  haloGrad.addColorStop(1, `rgba(245,239,220,0)`);
+  ctx.fillStyle = haloGrad;
+  ctx.beginPath();
+  ctx.arc(x, y, haloOuter, 0, Math.PI * 2);
+  ctx.fill();
+
   ctx.save();
   ctx.beginPath();
   ctx.arc(x, y, r, 0, Math.PI * 2);
