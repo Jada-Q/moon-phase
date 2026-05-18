@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 const CITIES: Array<{ key: string; label: string }> = [
   { key: "tokyo", label: "Tokyo" },
   { key: "kyoto", label: "Kyoto" },
@@ -10,6 +12,12 @@ const CITIES: Array<{ key: string; label: string }> = [
 ];
 
 export default function CitySwitcher({ active }: { active: string }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    setShow(new URLSearchParams(window.location.search).get("embed") === "app");
+  }, []);
+  if (!show) return null;
+
   return (
     <div
       className="pointer-events-none fixed z-20 select-none
